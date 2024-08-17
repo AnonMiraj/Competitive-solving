@@ -37,14 +37,28 @@
 #define int long long
 using namespace std;
 
-int n, k;
+int n, k, ans = 0;
 vector<vector<int>> adj;
-void dfs(int s, int e) {
+int dfs(int v, int p, int x) {
   // process node s
-  for (auto u : adj[s]) {
-    if (u != e)
-      dfs(u, s);
+  int bruh = 1;
+  for (auto u : adj[v]) {
+    if (u != p) {
+      bruh += dfs(u, v, x);
+    }
   }
+  if (bruh >= x) {
+    ans++;
+    return 0;
+  }
+  return bruh;
+}
+int wtf(int x) {
+  ans = 0;
+
+  if (dfs(0, -1, x) >= x)
+    ans++;
+  return ans;
 }
 void solve() {
   cin >> n >> k;
@@ -52,14 +66,24 @@ void solve() {
   adj = vector<vector<int>>(n + 1);
   for (int i = 1; i < n; i++) {
     cin >> a >> b;
+    a--;
+    b--;
     adj[a].push_back(b);
     adj[b].push_back(a);
   }
+  int l = 1, r = n + 1;
+  while (l+1 < r) {
+    int mid = (l + r) / 2;
+    ans = 0;
+    if (wtf(mid) > k) {
+      l = mid;
 
-  for (int i = 1; i < n; i++) {
-    cerr<<i<<" ";
-    debug(adj[i]);
+    } else {
+      r = mid;
+    }
   }
+
+  cout << l << "\n";
   adj.clear();
 }
 int32_t main() {
