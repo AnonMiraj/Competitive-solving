@@ -1,0 +1,135 @@
+// ﷽
+// Contest: ITMO Academy: pilot course - Segment Tree, part 1 - Step 1
+// Judge: Codeforces
+// URL: https://codeforces.com/edu/course/2/lesson/4/1/practice/contest/273169/problem/C
+// Memory Limit: 1024
+// Time Limit: 1000
+// Start: Sun 16 Jun 2024 10:31:06 AM EEST
+// Reading Time : 
+// Thinking Time : 
+// Coding Time : 
+// Comments : 
+#include<bits/stdc++.h>
+
+#ifdef ALGOAT
+#include "debug.hpp"
+#else
+#define debug(...) 0
+#define debug_itr(...) 0
+#define debug_bits(...) 0
+#endif
+
+// 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
+#define fastio()                                                               \
+  ios_base::sync_with_stdio(false);                                            \
+  cin.tie(NULL);
+
+#define int long long
+
+using namespace std;
+
+
+struct seg{
+  int size;
+  vector<pair<int,int>> sums;
+  void init(int n){
+    size= 1;
+    while(size<n) size*=2;
+    sums = vector<pair<int,int>>(2*size,{(int)1e9,1});
+  }
+  pair<int, int> combine(const pair<int, int>& a, const pair<int, int>& b) {
+    if (a.first < b.first) return a;
+    if (b.first < a.first) return b;
+    return {a.first, a.second + b.second};
+  }
+  void build(vector<int> &v,int x,int lx,int rx){
+    if(rx-lx==1)
+    {
+      if(lx<(int)v.size())
+        sums[x]={v[lx],1};
+      return;
+    }
+    int m=(lx+rx)/2;
+    build(v,2*x+1,lx,m);
+    build(v,2*x+2,m,rx);
+    sums[x] = combine(sums[2 * x + 1], sums[2 * x + 2]);
+  }
+
+  void build(vector<int> &v){
+    build(v,0,0,size);
+  }
+
+  void set(int i,int v,int x,int lx,int rx){
+    if(rx-lx==1)
+    {
+      sums[x]={v,1};
+      return;
+    }
+    int m=(lx+rx)/2;
+    if(i<m)
+      set(i,v,2*x+1,lx,m);
+    else
+      set(i,v,2*x+2,m,rx);
+    sums[x] = combine(sums[2 * x + 1], sums[2 * x + 2]);
+  }
+
+  void set(int i,int v){
+    set(i,v,0,0,size);
+  }
+  pair<int,int> sum(int l,int r,int x,int lx,int rx)
+  {
+    if(lx>=r||rx<=l) return {(int)1e9,0};
+    if(lx>=l&&rx<=r) return sums[x];
+    int m=(lx+rx)/2;
+    return combine(sum(l, r, 2 * x + 1, lx, m), sum(l, r, 2 * x + 2, m, rx));
+
+  }
+  pair<int,int> sum(int l,int r)
+  {
+    return sum(l,r,0,0,size);
+
+  }
+
+};
+void solve() {
+  int n,m;
+  cin>>n>>m;
+  vector<int> a(n);
+  for(int &i:a)
+    cin>>i;
+  seg s;
+  s.init(n);
+  debug(a);
+  s.build(a);
+  debug(s.sums);
+  int l,r,o;
+  while(m--)
+  {
+    cin>>o>>l>>r;
+    if(o==1)
+      s.set(l,r);
+    else
+    {
+
+      pair<int,int>p=s.sum(l,r);
+      cout << p.first<<" " << p.second<<"\n";
+    }
+
+  }
+
+
+
+
+
+
+}int32_t main() {
+
+  //  freopen("whereami.in", "r", stdin);
+  //  freopen("whereami.out", "w", stdout);
+  fastio();
+  int n = 1;
+  // cin>>n;
+  while (n--)
+    solve();
+  return 0;
+}
