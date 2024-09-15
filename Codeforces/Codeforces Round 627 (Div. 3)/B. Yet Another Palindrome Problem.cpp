@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
+// Contest: Codeforces Round 627 (Div. 3)
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/1324/problem/B
+// Memory Limit: 256
+// Time Limit: 2000
+// Start: Sun 18 Aug 2024 10:02:56 PM EEST
 // Reading Time : 
 // Thinking Time : 
 // Coding Time : 
@@ -30,46 +30,46 @@
 
 using namespace std;
 
+
 void solve() {
-  int n,m;
-  cin>>n>>m;
-  vector<int> adj[n+1];
-  vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
-  int a,b;
-
-  while(m--)
-  {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+  int n;
+  cin >> n;
+  vector<int> a(n),x;
+  for (int i = 0; i < n; i++) {
+      cin >> a[i];
   }
-  debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
-    vis[p]=1;
-    for(auto v:adj[p])
+  for (int i = 0; i < n-2; i++) {
+    if(a[i]==a[i+2])
     {
-      if(!vis[v])
-        dfs(v);
+      cout<<"YES\n";
+      return;
     }
-  };
-  dfs(1);
-  for(int i=2;i<=n;i++)
-  {
-    if(!vis[i])
-    {
-      dfs(i);
-      ans.push_back({1,i});
-    }
-
   }
+  x=a;
+  reverse(all(x));
+    if(a==x)
+    {
+      cout<<"YES\n";
+      return;
+    }
+ 
+  a.erase(unique(all(a)),a.end());
+  debug(a);
 
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
+  map<int,int> m;
+  for (auto i : a) {
+    m[i]++;
+  }
+  debug(m);
 
+  for (auto [a,b] : m) {
+    if(b>=2)
+    {
+      cout<<"YES\n";
+      return;
+    }
+  }
+      cout<<"NO\n";
 
 }
 int32_t main() {
@@ -78,7 +78,7 @@ int32_t main() {
   /*freopen("whereami.out", "w", stdout);*/
   fastio();
   int n = 1;
-  /*cin>>n;*/
+  cin>>n;
   while (n--)
     solve();
   return 0;

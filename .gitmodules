@@ -1,0 +1,3 @@
+[submodule "Useful_Stuff/Icpc-refrence"]
+	path = Useful_Stuff/Icpc-refrence
+	url = git@github.com:AnonMiraj/Icpc-refrence.git

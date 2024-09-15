@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
+// Contest: Codeforces Round 173 (Div. 2)
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/282/problem/B
+// Memory Limit: 256
+// Time Limit: 5000
+// Start: Fri 23 Aug 2024 02:58:17 PM EEST
 // Reading Time : 
 // Thinking Time : 
 // Coding Time : 
@@ -31,45 +31,34 @@
 using namespace std;
 
 void solve() {
-  int n,m;
-  cin>>n>>m;
-  vector<int> adj[n+1];
-  vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
-  int a,b;
+  int n;
+  cin>>n;
+  int sg=0,sa=0;
+  int a,g;
+  string s;
+  while(n--)
+  {
+    cin>>a>>g;
+    if(abs(sg-(sa+a))<=500)
+    {
+      s+='A';
+      sa+=a;
+    }
+    else     if(abs((sg+g)-(sa))<=500)
 
-  while(m--)
-  {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
-  }
-  debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
-    vis[p]=1;
-    for(auto v:adj[p])
     {
-      if(!vis[v])
-        dfs(v);
+      s+='G';
+      sg+=g;
     }
-  };
-  dfs(1);
-  for(int i=2;i<=n;i++)
-  {
-    if(!vis[i])
-    {
-      dfs(i);
-      ans.push_back({1,i});
-    }
+
+
 
   }
 
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
-
+    if(abs(sg-sa)<=500)
+      cout<<s;
+    else
+      cout<<-1;
 
 }
 int32_t main() {

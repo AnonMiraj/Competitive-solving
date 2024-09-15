@@ -1,10 +1,11 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
-// Memory Limit: 512
+// Contest: Codeforces Round 969 (Div. 2)
+//
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/2007/problem/B
+// Memory Limit: 256
 // Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
+// Start: Fri 30 Aug 2024 05:56:02 PM EEST
 // Reading Time : 
 // Thinking Time : 
 // Coding Time : 
@@ -32,43 +33,34 @@ using namespace std;
 
 void solve() {
   int n,m;
-  cin>>n>>m;
-  vector<int> adj[n+1];
-  vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
-  int a,b;
-
+  cin >> n>>m;
+  vector<int> a(n);
+  int ma=0;
+  for (int i = 0; i < n; i++) {
+      cin >> a[i];
+      ma=max(a[i],ma);
+  }
+  char c;
+  int l,r;
   while(m--)
   {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
-  }
-  debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
-    vis[p]=1;
-    for(auto v:adj[p])
+    cin>>c>>l>>r;
+    if(c=='+')
     {
-      if(!vis[v])
-        dfs(v);
+      if(ma>=l&&ma<=r)
+        ma++;
+
     }
-  };
-  dfs(1);
-  for(int i=2;i<=n;i++)
-  {
-    if(!vis[i])
+    else
     {
-      dfs(i);
-      ans.push_back({1,i});
+
+      if(ma>=l&&ma<=r)
+        ma--;
     }
+    cout<<ma<<" ";
 
   }
-
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
+  cout<<"\n";
 
 
 }
@@ -78,7 +70,7 @@ int32_t main() {
   /*freopen("whereami.out", "w", stdout);*/
   fastio();
   int n = 1;
-  /*cin>>n;*/
+  cin>>n;
   while (n--)
     solve();
   return 0;

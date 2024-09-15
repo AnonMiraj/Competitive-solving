@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
-// Memory Limit: 512
+// Contest: Codeforces Round 967 (Div. 2)
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/2001/problem/a
+// Memory Limit: 256
 // Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
+// Start: Tue 20 Aug 2024 07:15:07 PM EEST
 // Reading Time : 
 // Thinking Time : 
 // Coding Time : 
@@ -31,44 +31,20 @@
 using namespace std;
 
 void solve() {
-  int n,m;
-  cin>>n>>m;
-  vector<int> adj[n+1];
-  vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
-  int a,b;
-
-  while(m--)
+  int n;
+  cin>>n;
+  map<int,int> m;
+  int t;
+  for(int i=0;i<n;i++)
   {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
-  }
-  debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
-    vis[p]=1;
-    for(auto v:adj[p])
-    {
-      if(!vis[v])
-        dfs(v);
-    }
-  };
-  dfs(1);
-  for(int i=2;i<=n;i++)
-  {
-    if(!vis[i])
-    {
-      dfs(i);
-      ans.push_back({1,i});
-    }
 
+    cin>>t;
+    m[t]++;
   }
-
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
+  t=-1;
+  for(auto [a,b]:m)
+    t=max(t,b);
+  cout<<n-t<<"\n";
 
 
 }
@@ -78,7 +54,7 @@ int32_t main() {
   /*freopen("whereami.out", "w", stdout);*/
   fastio();
   int n = 1;
-  /*cin>>n;*/
+  cin>>n;
   while (n--)
     solve();
   return 0;

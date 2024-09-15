@@ -1,10 +1,11 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
-// Memory Limit: 512
+// Contest: Codeforces Round 280 (Div. 2)
+//
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/492/problem/C
+// Memory Limit: 256
 // Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
+// Start: Tue 27 Aug 2024 06:05:47 PM EEST
 // Reading Time : 
 // Thinking Time : 
 // Coding Time : 
@@ -31,45 +32,33 @@
 using namespace std;
 
 void solve() {
-  int n,m;
-  cin>>n>>m;
-  vector<int> adj[n+1];
-  vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
-  int a,b;
-
-  while(m--)
-  {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+  int n,r,av;
+  cin>>n>>r>>av;
+  vector<pair<int,int>> v(n);
+  int su=0;
+  for (auto &[a,b] :v) {
+    cin>>b>>a;
+    su+=b;
   }
-  debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
-    vis[p]=1;
-    for(auto v:adj[p])
+  int need=av*n-su;
+  sort(all(v));
+  debug(v,need);
+
+  int ans=0;
+  for (auto &[a,b] :v) {
+
+    if(need<=0)
     {
-      if(!vis[v])
-        dfs(v);
-    }
-  };
-  dfs(1);
-  for(int i=2;i<=n;i++)
-  {
-    if(!vis[i])
-    {
-      dfs(i);
-      ans.push_back({1,i});
+      cout<<ans;
+      return;
     }
 
+    int am=min(r-b,need);
+    ans+=a*am;
+    need-=am;
   }
-
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
-
+      cout<<ans;
+  
 
 }
 int32_t main() {

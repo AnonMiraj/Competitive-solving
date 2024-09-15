@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
+// Contest: Codeforces Round 297 (Div. 2)
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/525/problem/B
+// Memory Limit: 256
+// Time Limit: 2000
+// Start: Fri 23 Aug 2024 04:35:23 PM EEST
 // Reading Time : 
 // Thinking Time : 
 // Coding Time : 
@@ -31,45 +31,26 @@
 using namespace std;
 
 void solve() {
-  int n,m;
-  cin>>n>>m;
-  vector<int> adj[n+1];
-  vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
-  int a,b;
+  string s;
+  cin>>s;
+  int k=s.size();
+  int n;
+  cin >> n;
+  int t;
 
-  while(m--)
-  {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+  vector<int> pref(s.size()+2);
+  for (int i = 0; i < n; i++) {
+    cin>>t;
+    pref[t]++;
+    pref[k-t+2]--;
   }
-  debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
-    vis[p]=1;
-    for(auto v:adj[p])
-    {
-      if(!vis[v])
-        dfs(v);
-    }
-  };
-  dfs(1);
-  for(int i=2;i<=n;i++)
-  {
-    if(!vis[i])
-    {
-      dfs(i);
-      ans.push_back({1,i});
-    }
-
+  for (int i = 1; i <= k/2; i++) {
+    pref[i]+=pref[i-1];
+    if(pref[i]&1)
+      swap(s[i-1],s[k-i]);
   }
-
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
-
+  cout<<s;
+  debug(pref);
 
 }
 int32_t main() {

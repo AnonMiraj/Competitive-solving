@@ -1,10 +1,11 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
-// Memory Limit: 512
+// Contest: unknown_contest
+//
+// Judge: Codeforces
+// URL: https://m3.codeforces.com/contest/2009/problem/B
+// Memory Limit: 256
 // Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
+// Start: Tue 03 Sep 2024 05:39:46 PM EEST
 // Reading Time : 
 // Thinking Time : 
 // Coding Time : 
@@ -25,50 +26,36 @@
   cin.tie(NULL);
 
 #define int long long
+#define F first
+#define S second
 #define all(a) (a).begin(), (a).end()
 #define rall(a) (a).rbegin(), (a).rend()
 
 using namespace std;
 
 void solve() {
-  int n,m;
-  cin>>n>>m;
-  vector<int> adj[n+1];
-  vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
-  int a,b;
+  int n;
+  cin>>n;
+  vector<int> v(n);
+  string s;
+  for (int i = 0; i < n; i++) {
+    cin>>s;
+    if(s[0]=='#')
+      v[i]=1;
 
-  while(m--)
-  {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+    if(s[1]=='#')
+      v[i]=2;
+    if(s[2]=='#')
+      v[i]=3;
+    if(s[3]=='#')
+      v[i]=4;
   }
-  debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
-    vis[p]=1;
-    for(auto v:adj[p])
-    {
-      if(!vis[v])
-        dfs(v);
-    }
-  };
-  dfs(1);
-  for(int i=2;i<=n;i++)
-  {
-    if(!vis[i])
-    {
-      dfs(i);
-      ans.push_back({1,i});
-    }
-
+  for (int i = 0; i < n; i++) {
+    cout<<v[n-i-1]<<" ";
+    
   }
 
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
+  cout<<"\n";
 
 
 }
@@ -78,7 +65,7 @@ int32_t main() {
   /*freopen("whereami.out", "w", stdout);*/
   fastio();
   int n = 1;
-  /*cin>>n;*/
+  cin>>n;
   while (n--)
     solve();
   return 0;

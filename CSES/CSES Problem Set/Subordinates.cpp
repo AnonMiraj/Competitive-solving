@@ -1,10 +1,10 @@
 // ﷽
 // Contest: CSES Problem Set
 // Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
+// URL: https://cses.fi/problemset/task/1674
 // Memory Limit: 512
 // Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
+// Start: Sat 24 Aug 2024 08:29:28 PM EEST
 // Reading Time : 
 // Thinking Time : 
 // Coding Time : 
@@ -31,46 +31,27 @@
 using namespace std;
 
 void solve() {
-  int n,m;
-  cin>>n>>m;
+  int n;
+  cin >> n;
   vector<int> adj[n+1];
-  vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
-  int a,b;
-
-  while(m--)
-  {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+  vector<int> ans(n+1);
+  int t;
+  for (int i = 2; i <= n; i++) {
+    cin>>t;
+    adj[t].push_back(i);
   }
   debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
-    vis[p]=1;
+  function<int(int)> dfs = [&](int p){
     for(auto v:adj[p])
     {
-      if(!vis[v])
-        dfs(v);
+      ans[p]+=dfs(v);
     }
+    return ans[p]+1;
   };
+
   dfs(1);
-  for(int i=2;i<=n;i++)
-  {
-    if(!vis[i])
-    {
-      dfs(i);
-      ans.push_back({1,i});
-    }
-
-  }
-
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
-
-
+  for(int i=1;i<=n;i++)
+    cout<<ans[i]<<" ";
 }
 int32_t main() {
 

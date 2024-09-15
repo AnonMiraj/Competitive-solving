@@ -1,12 +1,12 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
-// Memory Limit: 512
+// Contest: Technocup 2017 - Elimination Round 1 (Unofficially Open for Everyone, Rated for Div. 2)
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/727/problem/A
+// Memory Limit: 256
 // Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
-// Reading Time : 
-// Thinking Time : 
+// Start: Sat 24 Aug 2024 09:38:01 PM EEST
+// Reading Time : 1
+// Thinking Time : 2
 // Coding Time : 
 // Comments : 
 #include<bits/stdc++.h>
@@ -31,45 +31,45 @@
 using namespace std;
 
 void solve() {
-  int n,m;
-  cin>>n>>m;
-  vector<int> adj[n+1];
-  vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
   int a,b;
+  cin>>a>>b;
 
-  while(m--)
-  {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
-  }
-  debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
-    vis[p]=1;
-    for(auto v:adj[p])
+  vector<int> v;
+  function<int(int)> dfs = [&](int p){
+    if(p>b)
+      return 0;
+    if(p==b)
     {
-      if(!vis[v])
-        dfs(v);
+
+      v.push_back(p);
+      return 1;
     }
+    int xa,xb;
+    xa=dfs(p*2);
+    xb=dfs(p*10+1);
+    if(xa+xb)
+    {
+      v.push_back(p);
+      return 1;
+    }
+      return 0;
   };
-  dfs(1);
-  for(int i=2;i<=n;i++)
+
+  dfs(a);
+  reverse(all(v));
+  if(v.size())
   {
-    if(!vis[i])
-    {
-      dfs(i);
-      ans.push_back({1,i});
-    }
+    cout<<"YES\n";
+    cout<<v.size()<<"\n";
 
+  for (auto i : v) {
+    cout<<i<<" ";
   }
-
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
-
+  return;
+  }
+  
+    cout<<"NO\n";
+    
 
 }
 int32_t main() {

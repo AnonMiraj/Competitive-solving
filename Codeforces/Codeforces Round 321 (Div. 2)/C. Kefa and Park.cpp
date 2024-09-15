@@ -1,12 +1,12 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1666
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Sat 24 Aug 2024 08:03:28 PM EEST
-// Reading Time : 
-// Thinking Time : 
+// Contest: Codeforces Round 321 (Div. 2)
+// Judge: Codeforces
+// URL: https://codeforces.com/problemset/problem/580/C
+// Memory Limit: 256
+// Time Limit: 2000
+// Start: Sat 24 Aug 2024 08:46:37 PM EEST
+// Reading Time : 3
+// Thinking Time : 5
 // Coding Time : 
 // Comments : 
 #include<bits/stdc++.h>
@@ -31,46 +31,42 @@
 using namespace std;
 
 void solve() {
-  int n,m;
-  cin>>n>>m;
-  vector<int> adj[n+1];
+  int n;
+  int m;
+  cin >> n;
+  cin >> m;
+  vector<int> a(n+1);
   vector<int> vis(n+1);
-  vector<pair<int,int>> ans;
-  int a,b;
-
-  while(m--)
-  {
-    cin>>a>>b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+  for (int i = 1; i <=n; i++) {
+      cin >> a[i];
   }
-  debug_itr(adj,adj+n+1);
-  function<void(int)> dfs = [&](int p){
+  vector<int> adj[n+1];
+
+  int x,y;
+  for (int i = 1; i < n; i++) {
+      cin >> x >> y;
+      adj[x].push_back(y);
+      adj[y].push_back(x);
+  }
+  debug(a);
+  int ans=0;
+  function<void(int,int)> dfs = [&](int p,int c){
     vis[p]=1;
+    debug(c);
+      if(c>m)
+        return;
+      if(p!=1)
+        ans+=(adj[p].size()==1);
     for(auto v:adj[p])
     {
       if(!vis[v])
-        dfs(v);
+        dfs(v,(a[p]*a[v])*(c)+a[v]);
     }
   };
-  dfs(1);
-  for(int i=2;i<=n;i++)
-  {
-    if(!vis[i])
-    {
-      dfs(i);
-      ans.push_back({1,i});
-    }
 
-  }
-
-  debug(vis);
-      cout<<ans.size()<<"\n";
-    for(auto [a,b]:ans)
-      cout<<a<<" " <<b<<"\n";
-      
-
-
+  debug(a);
+  dfs(1,a[1]);
+  cout<<ans;
 }
 int32_t main() {
 

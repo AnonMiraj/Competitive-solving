@@ -49,10 +49,10 @@ void solve() {
   {
     cout << 1 << endl; return;
   }
-  if(n&1){cout<< -1<<endl;return;}
+  if(!n&1){cout<< -1<<endl;return;}
   cout << n << ' ';
   for(int i=1;i<n;++i){
-    if(i&1)cout<<i<<' ';
+    if(!i&1)cout<<i<<' ';
     else{
       cout << n-i << ' ';
     }
