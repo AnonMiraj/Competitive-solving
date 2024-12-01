@@ -6,7 +6,6 @@
 #define pb push_back
 #define vi vector<int>
 
-
 #ifdef ALGOAT
 #include "debug.hpp"
 #else
@@ -21,42 +20,37 @@ void file() {
   /*freopen("outputt.in","w",stdout);*/
 }
 int divisors[int(1e5 + 100)];
-vector<vector<int>> divs;
-void div() {
-    const int n = 1e5+10;
 
-    divs=vector<vector<int>>(n);
-    for (int i = 1; i < n; i++) {
-        for (int j = i; j < n; j += i) {
-            divs[j].push_back(i);
-        }
+const int n = 1e5 + 10;
+vector<vector<int>> divs(n);
+
+// Precompute all divisors for numbers up to 1e5+10
+void div() {
+  for (int i = 1; i < n; i++) {
+    for (int j = i; j < n; j += i) {
+      divs[j].push_back(i);
     }
+  }
 }
 void solve() {
-    int n, k, m;
-    cin >> n >> k;
-    m = n - k;
-    int t;
-    
-    for (int i = 0; i < n; i++)
-    {
-      cin>>t;
-      for(auto fa:divs[t])
-        divisors[fa]++;
+  int n, k, m;
+  cin >> n >> k;
+  m = n - k;
+  int t;
+
+  for (int i = 0; i < n; i++) {
+    cin >> t;
+    for (auto fa : divs[t]) divisors[fa]++;
+  }
+
+  int ans = -1;
+  for (int i = 1e5 + 10; i > 0; i--) {
+    if (divisors[i] >= m) {
+      ans = i;
+      break;
     }
-
-    int ans=-1;
-    for (int i = 1e5+10; i > 0; i--)
-    {
-
-      if(divisors[i]>=m)
-      {
-        ans=i;
-        break;
-
-      }
-    }
-    cout<<ans;
+  }
+  cout << ans;
 }
 int32_t main() {
   file();

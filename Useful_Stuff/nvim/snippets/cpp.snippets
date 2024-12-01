@@ -29,25 +29,35 @@ snippet set
 
 snippet fori
 	for (int ${2:i} = 0; $2 < ${1:n}; $2${3:++}) {
-		${4}
 	}
 
 snippet fore
 	for (${1:auto} ${2:i} : ${3:container}) {
-		${4}
+          cout<<i << " ";
 	}
 
 snippet form
 	for (${1:auto} &[${2:a},${3:b}] : ${4:container}) {
-		${4}
 	}
 
+snippet cin
+    int ${1:x};
+    cin >> $1;
+
+snippet cout
+    cout << ${1:x} << "\n";
+
+snippet yes
+    cout << "YES\n";
+
+snippet no
+    cout << "NO\n";
 
 # useful algos
 # Prime factorization in O(sqrt(n))
 snippet code_primefacts
     map<int, int> primefacts(int n) {
-      map<int, int> primes;
+      map<int,int> primes;
       for (int i = 2; i * i <= n; i++) {
         while (n % i == 0) {
           primes[i]++;
@@ -62,13 +72,57 @@ snippet code_primefacts
 
 # Prime factorization query in O(log(n))
 snippet code_primefacts_log
-    void getFactorization(int x, map<int, int> &primes) {
+    map<int, int> primefacts_log(int x) {
+      map<int, int> primes;
       while (x != 1) {
         primes[spf[x]]++;
         x = x / spf[x];
       }
     }
 
+# get divisors from prime facts
+snippet code_getdivs_primefacts
+    vector<int> getDivisors(map<int, int>& primeFactors) {
+      vector<int> divisors;
+      divisors.push_back(1);
+      for (auto& [prime, power] : primeFactors) {
+        for (int i = 0; i < divisors.size(); i++) {
+          long long curr = divisors[i];
+          for (int j = 1; j <= power; j++) {
+            curr *= prime;
+            divisors.push_back(curr);
+          }
+        }
+      }
+      return divisors;
+    }
+
+# get divisors dierctly O(sqrt(n))
+snippet code_getdivs
+    vector<int> getDivisors(int n) {
+      vector<int> divisors;
+      for (int i = 1; i * i <= n; i++) {
+        if (n % i == 0) {
+          divisors.push_back(i);
+          if (i * i != n) {
+            divisors.push_back(n / i);
+          }
+        }
+      }
+      return divisors;
+    }
+# check if prime 
+snippet code_isprime
+    bool isPrime(int n) {
+        if(n < 2) return false;
+        if(n == 2) return true;
+        if(n % 2 == 0) return false;
+        
+        for(int i = 3; i * i <= n; i += 2) {
+            if(n % i == 0) return false;
+        }
+        return true;
+    }
 # Sieve's algorithm to mark numbers as primes and composites
 snippet code_sieve
     void sieve(vector<bool> &is_prime) {
@@ -85,6 +139,17 @@ snippet code_sieve
         }
     }
 
+snippet code_sieve_fast
+    const int NMAX = 1000000;
+    bitset<NMAX / 2> bits;
+
+    void precalcseive() {
+      bits.set();
+      for (int i = 3; i / 2 < bits.size(); i = 2 * bits._Find_next(i / 2) + 1) {
+        for (auto j = (int64_t)i * i / 2; j < bits.size(); j += i)
+          bits[j] = 0;
+      }
+    }
 
 # Fast Sieve's algorithm to calc minimum prime
 snippet code_sieve_spf
@@ -219,6 +284,30 @@ snippet code_bfs
       }
     }
   }
+snippet code_bfs_grid
+  queue<pair<int, int>> q;
+  vector<vector<int>> d(m + 1, vector<int>(n + 1, inf));
+  vector<vector<bool>> visited(m + 1, vector<bool>(n + 1, false));
+  q.push({startX, startY});
+  d[startX][startY] = 0;
+  visited[startX][startY] = true;
+
+  int dx[] = {-1, 0, 1, 0}; // Movement in four directions (up, right, down, left)
+  int dy[] = {0, 1, 0, -1};
+
+  while (!q.empty()) {
+    auto [x, y] = q.front();
+    q.pop();
+    for (int i = 0; i < 4; ++i) {
+      int newX = x + dx[i];
+      int newY = y + dy[i];
+      if (newX >= 1 && newX <= m && newY >= 1 && newY <= n && !visited[newX][newY]) {
+        visited[newX][newY] = true;
+        d[newX][newY] = d[x][y] + 1;
+        q.push({newX, newY});
+      }
+    }
+  }
 # random utils
 snippet code_rand
     mt19937 rng = mt19937(random_device()());
@@ -286,4 +375,18 @@ snippet inverse_sum
     auto inverse_sum = [](int S) {
         return ceil((-1 + sqrt(1 + 8 * S)) / 2);
     };
+
+# stress bash
+snippet stress
+    g++ -o A A.cpp
+    g++ -o B B.cpp
+    g++ -o gen gen.cpp
+    for ((i = 1; ; ++i)); do  # if they are same then will loop forever
+        echo $i
+        ./gen $i > int
+        ./A < int > out1
+        ./B < int > out2
+        #diff -w out1 out2 || break
+         diff -w <(./A < int) <(./B < int) || break
+    done
 

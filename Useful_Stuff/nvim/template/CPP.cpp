@@ -9,6 +9,10 @@
 // Reading Time :
 // Thinking Time :
 // Coding Time :
+// Debug Time : 
+// Submit Count : 
+// Problem Level : 
+// Category : 
 // Comments :
 #include <bits/stdc++.h>
 
@@ -34,6 +38,7 @@ const int dx[8] = {1, 0, -1, 0, 1, 1, -1, -1},
           dy[8] = {0, 1, 0, -1, -1, 1, -1, 1};
 using namespace std;
 
+#define MUTLI_CASE
 void solve() {
 
 }
@@ -42,7 +47,10 @@ int32_t main() {
   /*freopen("whereami.out", "w", stdout);*/
   fastio();
   int n = 1;
-  /*cin>>n;*/
+
+#ifdef MUTLI_CASE
+  cin>>n;
+#endif
   while (n--) solve();
   return 0;
 }
